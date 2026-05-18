@@ -43,7 +43,9 @@ from .pipeline import pipeline, register_step
 from .quality import (
     ColumnProfile,
     DataQualityReport,
+    ProfileComparison,
     auto_clean,
+    compare_profiles,
     profile,
     suggest_cleaning,
 )
@@ -105,10 +107,12 @@ __all__ = [
     "register_step",
     # Data quality
     "profile",
+    "compare_profiles",
     "suggest_cleaning",
     "auto_clean",
     "ColumnProfile",
     "DataQualityReport",
+    "ProfileComparison",
     # Schema validation
     "Schema",
     "Field",
