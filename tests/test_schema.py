@@ -74,12 +74,11 @@ def test_validation_result_to_pandas(sample_csv):
 def test_unique_constraint_detects_duplicates(tmp_path):
     path = tmp_path / "unique.csv"
     path.write_text("id,value\n1,100\n2,200\n1,300\n3,400\n")
-    result = ar.validate(
-        ar.read_csv(path), {"id": ar.Int64(unique=True)}
-    )
+    result = ar.validate(ar.read_csv(path), {"id": ar.Int64(unique=True)})
     assert not result.passed
-    rules = [issue.rule for issue in result.issues]
-    assert "unique" in rules
+    assert any(
+        issue.rule == "unique" and issue.column == "id" for issue in result.issues
+    )
 
 
 def test_custom_pattern_validation(tmp_path):
