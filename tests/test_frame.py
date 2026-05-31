@@ -267,6 +267,17 @@ def test_preview_invalid_n_none(sample_csv):
         frame.preview(n=None)
 
 
+def test_preview_zero_column_frame():
+    df = pd.DataFrame(index=range(3))
+
+    frame = ar.from_pandas(df)
+    result = frame.preview()
+
+    expected = "ArFrame preview: 3 rows x 0 columns (no columns to display)"
+
+    assert result == expected
+
+
 def test_select_columns_valid():
     df = pd.DataFrame(
         {
