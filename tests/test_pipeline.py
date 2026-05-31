@@ -631,7 +631,7 @@ class TestPipeline:
             ar.unregister_step("missing_step")
 
     def test_unregister_builtin_python_step(self):
-        with pytest.raises(ar.UnknownStepError):
+        with pytest.raises(ValueError):
             ar.unregister_step("standardize_missing_tokens")
 
     def test_unregister_custom_step(self):
