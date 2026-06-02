@@ -1,5 +1,5 @@
 """Tests for data quality profiling and smart cleaning."""
-
+from arnio.quality import DataQualityReport
 import io
 import json
 import math
@@ -4303,3 +4303,33 @@ def test_auto_clean_rejects_invalid_string_mode():
     frame = ar.from_dict({"name": [" Alice "]})
     with pytest.raises(ValueError, match="mode must be 'safe' or 'strict'"):
         ar.auto_clean(frame, mode="SAFE")
+
+def test_score_breakdown_defaults():
+    """Ensure score_breakdown returns expected structure and values."""
+
+    instance = DataQualityReport(
+        row_count=100,
+        column_count=5,
+        memory_usage=1024,
+        duplicate_rows=0,
+        duplicate_ratio=0.0,
+        columns=["a", "b", "c", "d", "e"]
+    )
+
+    result = instance.score_breakdown()
+
+    # must be dict
+    assert isinstance(result, dict)
+
+    # required keys
+    expected_keys = [
+        "null_penalty",
+        "duplicate_penalty",
+        "dtype_mismatch_penalty",
+        "final_score"
+    ]
+
+    for key in expected_keys:
+        assert key in result, f"Missing key: {key}"
+        assert isinstance(result[key], (int, float)), f"{key} must be numeric"
+        assert result[key] >= 0, f"{key} must be non-negative"
