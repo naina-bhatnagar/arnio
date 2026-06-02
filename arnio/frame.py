@@ -495,7 +495,6 @@ class ArFrame:
         *,
         delimiter: str = ",",
         write_header: bool = True,
-        encoding: str = "utf-8",
         **kwargs,
     ) -> None:
         """Write the ArFrame to a CSV file.
@@ -510,8 +509,6 @@ class ArFrame:
             Field delimiter character.
         write_header : bool, default True
             Whether to write the column header row.
-        encoding : str, default "utf-8"
-            File encoding. Currently only utf-8 is natively supported by the backend.
         **kwargs
             Additional arguments passed to :func:`arnio.write_csv` such as `line_terminator`.
 
@@ -521,8 +518,6 @@ class ArFrame:
         """
         from .io import write_csv
 
-        # write_csv currently doesn't accept encoding, so we drop it from kwargs
-        # but keep it in the signature for pandas compatibility as requested in #1981
         write_csv(
             self,
             path,
