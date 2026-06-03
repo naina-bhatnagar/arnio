@@ -1,7 +1,7 @@
+import gzip
 import os
 import tempfile
-import gzip
-import pytest
+
 import arnio as ar
 
 
@@ -28,9 +28,9 @@ def test_read_csv_gz_parity():
         df_compressed = ar.read_csv(compressed_path)
 
         # Compare columns and rows
-        assert df_uncompressed.column_names == df_compressed.column_names
+        assert df_uncompressed.columns == df_compressed.columns
         assert len(df_uncompressed) == len(df_compressed)
-        for col in df_uncompressed.column_names:
+        for col in df_uncompressed.columns:
             assert list(df_uncompressed[col]) == list(df_compressed[col])
 
         # 2. Test read_csv_chunked
@@ -40,7 +40,7 @@ def test_read_csv_gz_parity():
         assert len(chunks_uncompressed) == len(chunks_compressed)
         for chunk_un, chunk_comp in zip(chunks_uncompressed, chunks_compressed):
             assert len(chunk_un) == len(chunk_comp)
-            for col in chunk_un.column_names:
+            for col in chunk_un.columns:
                 assert list(chunk_un[col]) == list(chunk_comp[col])
 
         # 3. Test scan_csv
